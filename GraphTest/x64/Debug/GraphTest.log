@@ -1,0 +1,6 @@
+﻿  main.cpp
+D:\Working\GraphTest\GraphTest\main.cpp(24,34): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Working\GraphTest\GraphTest\main.cpp(24,24): warning C4244: 'initializing': conversion from 'double' to 'const float', possible loss of data
+D:\Working\GraphTest\GraphTest\main.cpp(25,34): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Working\GraphTest\GraphTest\main.cpp(25,24): warning C4244: 'initializing': conversion from 'double' to 'const float', possible loss of data
+  GraphTest.vcxproj -> D:\Working\GraphTest\x64\Debug\GraphTest.exe
