@@ -1,13 +1,11 @@
+#pragma once
+
 #include <iostream>
 #include <vector>
 #include <random>
 #include <math.h>
 #include <queue>
 #include <map>
-
-static constexpr size_t g_nPoints = 100;
-static constexpr float g_radius = 60;
-static constexpr float g_cost = 5.0f;
 
 namespace Core
 {
