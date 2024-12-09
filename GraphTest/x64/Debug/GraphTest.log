@@ -1,3 +1,0 @@
-﻿  main.cpp
-D:\Working\GraphTest\GraphTest\main.cpp(38,39): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  GraphTest.vcxproj -> D:\Working\GraphTest\x64\Debug\GraphTest.exe

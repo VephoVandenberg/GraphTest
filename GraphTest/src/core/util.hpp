@@ -2,6 +2,7 @@
 #include <vector>
 #include <random>
 #include <math.h>
+#include <queue>
 #include <map>
 
 static constexpr size_t g_nPoints = 100;
@@ -64,9 +65,8 @@ namespace Core
 					}
 				}
 
-				const size_t nNeighbours = std::min(maxNeighbours, std::max(minNeighbours, distToID.size()));
 				std::sort(distToID.begin(), distToID.end());
-				for (size_t iDist = 0; iDist < nNeighbours; iDist++)
+				for (size_t iDist = 0; iDist < maxNeighbours && iDist < distToID.size(); iDist++)
 				{
 					graph[iPoint].neighbours.push_back(distToID[iDist].second);
 				}
@@ -119,10 +119,51 @@ namespace Core
 		}
 
 		template <typename T>
-		void nearestNeighbourTour(const size_t  start, const size_t target, const Graph<T>& graph, std::vector<size_t> path)
+		float dijkstra(const Graph<T> graph, std::vector<size_t>& path, const size_t start, const size_t target)
 		{
-			std::vector<size_t> visited(graph.size(), false);
+			std::vector<float> distances(graph.size(), std::numeric_limits<float>::max());
+			std::vector<size_t> previous(graph.size(), static_cast<size_t>(-1));
+			std::vector<bool> visited(graph.size(), false);
+			distances[start] = 0.0f;
 
+			using NodePair = std::pair<float, size_t>;
+			std::priority_queue<NodePair, std::vector<NodePair>, std::greater<>> pq;
+			pq.emplace(0.0f, start);
+
+			while (!pq.empty()) 
+			{
+				const float currentDist = pq.top().first;
+				const size_t currentNode = pq.top().second;
+				pq.pop();
+
+				if (visited[currentNode])
+				{
+					continue;
+				}
+				
+				visited[currentNode] = true;
+
+				for (const size_t neighbour : graph[currentNode].neighbours)
+				{
+					const float edgeWeight = getDistance(graph[currentNode], graph[neighbour]) * 10.0f;
+					const float newDist = currentDist + edgeWeight;
+
+					if (newDist < distances[neighbour])
+					{
+						distances[neighbour] = newDist;
+						previous[neighbour] = currentNode;
+						pq.emplace(newDist, neighbour);
+					}
+				}
+			}
+
+			for (size_t at = target; at != static_cast<size_t>(-1); at = previous[at])
+			{
+				path.push_back(at);
+			}
+			std::reverse(path.begin(), path.end());
+
+			return distances[target];
 		}
 	}
 }
