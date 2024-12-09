@@ -1,3 +1,5 @@
+#include <SFML/Graphics/Font.hpp>
+
 #include "app.hpp"
 
 using namespace App;
@@ -16,7 +18,7 @@ void Application::run(const Core::Graph<float>& graph, const std::vector<size_t>
 		pollEvents();
 
         m_window->clear();
-        drawGraph(graph, path, start, end, radius);
+        draw(graph, path, start, end, radius);
         m_window->display();
 	}
 }
@@ -33,7 +35,7 @@ void Application::pollEvents()
 	}
 }
 
-void Application::drawGraph(const Core::Graph<float>& graph, const std::vector<size_t>& path,
+void Application::draw(const Core::Graph<float>& graph, const std::vector<size_t>& path,
     const size_t start, const size_t end, const float radius)
 {
     sf::CircleShape circle(radius);
@@ -45,6 +47,13 @@ void Application::drawGraph(const Core::Graph<float>& graph, const std::vector<s
     m_window->draw(circle);
 
     sf::Text costText;
+    sf::Font font;
+    font.loadFromFile("arial.ttf");
+    costText.setString("Test");
+    costText.setFont(font);
+    costText.setCharacterSize(24);
+
+    m_window->draw(costText);
 
     for (const auto& point : graph) 
     {

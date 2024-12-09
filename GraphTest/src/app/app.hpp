@@ -27,7 +27,7 @@ namespace App
 
 	private:
 		void pollEvents();
-		void drawGraph(const Core::Graph<float>& graph, const std::vector<size_t>& path, 
+		void draw(const Core::Graph<float>& graph, const std::vector<size_t>& path, 
 			const size_t start, const size_t end, const float radius);
 
 		std::unique_ptr<sf::RenderWindow> m_window = nullptr;
