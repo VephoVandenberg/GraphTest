@@ -9,14 +9,14 @@ Application::Application(const size_t width, const size_t height, const std::str
 }
 
 void Application::run(const Core::Graph<float>& graph, const std::vector<size_t>& path, 
-	const size_t start, const size_t end)
+	const size_t start, const size_t end, const float radius)
 {
 	while (m_window->isOpen())
 	{
 		pollEvents();
 
         m_window->clear();
-        drawGraph(graph, path, start, end);
+        drawGraph(graph, path, start, end, radius);
         m_window->display();
 	}
 }
@@ -33,8 +33,19 @@ void Application::pollEvents()
 	}
 }
 
-void Application::drawGraph(const Core::Graph<float>& graph, const std::vector<size_t>& path, const size_t start, const size_t end)
+void Application::drawGraph(const Core::Graph<float>& graph, const std::vector<size_t>& path,
+    const size_t start, const size_t end, const float radius)
 {
+    sf::CircleShape circle(radius);
+    circle.setPosition(m_center - sf::Vector2f(radius, radius));
+    circle.setFillColor(sf::Color::Black);
+    circle.setOutlineThickness(2);
+    circle.setOutlineColor(sf::Color::White);
+
+    m_window->draw(circle);
+
+    sf::Text costText;
+
     for (const auto& point : graph) 
     {
         for (size_t neighbour : point.neighbours) 
@@ -60,8 +71,8 @@ void Application::drawGraph(const Core::Graph<float>& graph, const std::vector<s
 
     for (const auto& point : graph) 
     {
-        sf::CircleShape circle(5);
-        circle.setPosition(m_center + sf::Vector2f(point.x - 5, point.y - 5));
+        sf::CircleShape circle(3);
+        circle.setPosition(m_center + sf::Vector2f(point.x - 3, point.y - 3));
         circle.setFillColor(sf::Color::Green);
         m_window->draw(circle);
     }

@@ -14,7 +14,8 @@ namespace App
 	public:
 		Application(const size_t width, const size_t height, const std::string& title);
 
-		void run(const Core::Graph<float>& graph, const std::vector<size_t>& path, const size_t start, const size_t end);
+		void run(const Core::Graph<float>& graph, const std::vector<size_t>& path, 
+			const size_t start, const size_t end, const float radius);
 
 		~Application() = default;
 
@@ -26,9 +27,11 @@ namespace App
 
 	private:
 		void pollEvents();
-		void drawGraph(const Core::Graph<float>& graph, const std::vector<size_t>& path, const size_t start, const size_t end);
+		void drawGraph(const Core::Graph<float>& graph, const std::vector<size_t>& path, 
+			const size_t start, const size_t end, const float radius);
 
 		std::unique_ptr<sf::RenderWindow> m_window = nullptr;
+
 		const sf::Vector2f m_center;
 	};
 }

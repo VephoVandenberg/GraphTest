@@ -72,8 +72,8 @@ namespace Core
 		}
 
 		template <typename T>
-		float findHammiltonGreedy(const size_t start, const size_t target, const float costPerUnit, 
-			const Graph<T> graph, std::vector<size_t>& path)
+		float findHammiltonGreedy(const Graph<T> graph, std::vector<size_t>& path, 
+			const size_t start, const size_t target, const float costPerUnit)
 		{
 			std::vector<bool> visited(graph.size(), false);
 			size_t current = start;
@@ -117,7 +117,7 @@ namespace Core
 		}
 
 		template <typename T>
-		float dijkstra(const Graph<T> graph, std::vector<size_t>& path, const size_t start, const size_t target)
+		float dijkstra(const Graph<T> graph, std::vector<size_t>& path, const size_t start, const size_t target, const float cost)
 		{
 			std::vector<float> distances(graph.size(), std::numeric_limits<float>::max());
 			std::vector<size_t> previous(graph.size(), static_cast<size_t>(-1));
@@ -143,7 +143,7 @@ namespace Core
 
 				for (const size_t neighbour : graph[currentNode].neighbours)
 				{
-					const float edgeWeight = getDistance(graph[currentNode], graph[neighbour]) * 10.0f;
+					const float edgeWeight = getDistance(graph[currentNode], graph[neighbour]) * cost;
 					const float newDist = currentDist + edgeWeight;
 
 					if (newDist < distances[neighbour])
