@@ -20,17 +20,26 @@ int main(int argc, char* argv[])
 	Core::Util::connectNodes(graph, 2, 6);
 
 	std::vector <size_t> path;
-	const float cost = Core::Util::dijkstra(graph, path, 0, 23, g_cost);
+	const float cost = Core::Util::dijkstra(graph, path, 21, 75, g_cost);
 
+	std::cout << "IDs: ";
 	for (auto& p : path)
 	{
 		std::cout << p << ' ';
 	}
 	std::cout << '\n';
+	
+	std::cout << "Positions: ";
+	for (auto& p : path)
+	{
+		std::cout << graph[p] << " ";
+	}
+	std::cout << '\n';
+
 	std::cout << "Total cost: " << cost << "$" << '\n';
 	
 	App::Application app(g_width, g_height, g_title);
-	app.run(graph, path, 0, 55, g_radius);
+	app.run(graph, path, 21, 75, g_radius);
 
 	return 0;
 }

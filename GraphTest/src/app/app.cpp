@@ -46,15 +46,6 @@ void Application::draw(const Core::Graph<float>& graph, const std::vector<size_t
 
     m_window->draw(circle);
 
-    sf::Text costText;
-    sf::Font font;
-    font.loadFromFile("arial.ttf");
-    costText.setString("Test");
-    costText.setFont(font);
-    costText.setCharacterSize(24);
-
-    m_window->draw(costText);
-
     for (const auto& point : graph) 
     {
         for (size_t neighbour : point.neighbours) 
