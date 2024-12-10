@@ -6,7 +6,6 @@ namespace Core
 	struct Point
 	{
 		T x, y;
-
 		std::vector<size_t> neighbours;
 
 		bool operator==(const Point& p)
