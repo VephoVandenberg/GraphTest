@@ -71,6 +71,7 @@ namespace Core
 			}
 		}
 
+		// Not sure if it is working
 		template <typename T>
 		float findHammiltonGreedy(const Graph<T> graph, std::vector<size_t>& path, 
 			const size_t start, const size_t target, const float costPerUnit)
@@ -162,6 +163,129 @@ namespace Core
 			std::reverse(path.begin(), path.end());
 
 			return distances[target];
+		}
+
+		template <typename T>
+		float TSPHeuristics(const Graph<T> graph, std::vector<size_t>& path, const size_t start, const size_t target, const float cost)
+		{
+			std::vector<bool> visited(graph.size(), false);
+			float totalCost = 0.0;
+
+			size_t current = start;
+			visited[current] = true;
+			path.push_back(current);
+
+			while (current != target) 
+			{
+				float minCost = std::numeric_limits<float>::max();
+				size_t nextNode = static_cast<size_t>(-1);
+
+				for (size_t i = 0; i < graph.size(); i++) 
+				{
+					if (!visited[i]) 
+					{
+						const float cost = getDistance(graph[current], graph[i]);
+						if (cost < minCost) 
+						{
+							minCost = cost;
+							nextNode = i;
+						}
+					}
+				}
+
+				visited[nextNode] = true;
+				path.push_back(nextNode);
+				totalCost += minCost;
+				current = nextNode;
+			}
+
+			return totalCost;
+		}
+
+		template <typename T>
+		float TSPHeuristics(const Graph<T> graph, std::vector<size_t>& path, 
+			const size_t start, const size_t target, 
+			const float cost, const size_t minNodes, const float randomnessFactor)
+		{
+			std::vector<bool> visited(graph.size(), false);
+			float totalCost = 0.0;
+
+			size_t current = start;
+			visited[current] = true;
+			path.push_back(current);
+
+			std::random_device rd;
+			std::mt19937 gen(rd());
+
+			while (current != target || path.size() < minNodes)
+			{
+				std::vector<std::pair<float, size_t>> candidates;
+
+				for (size_t i = 0; i < graph.size(); i++)
+				{
+					if (!visited[i])
+					{
+						const float cost = getDistance(graph[i], graph[current]);
+						candidates.emplace_back(cost, i);
+					}
+				}
+
+				if (candidates.empty())
+				{
+					break;
+				}
+
+				std::sort(candidates.begin(), candidates.end());
+
+				size_t range = std::min<size_t>(candidates.size(), static_cast<size_t>(randomnessFactor));
+				std::uniform_int_distribution<size_t> dist(0, range - 1);
+				size_t chosenIndex = dist(gen);
+
+				size_t nextNode = candidates[chosenIndex].second;
+				double chosenCost = candidates[chosenIndex].first;
+
+				visited[nextNode] = true;
+				path.push_back(nextNode);
+				totalCost += chosenCost;
+				current = nextNode;
+			}
+
+			while (path.size() < minNodes)
+			{
+				float minCost = std::numeric_limits<float>::max();
+				size_t nextNode = static_cast<size_t>(-1);
+
+				for (size_t i = 0; i < graph.size(); i++)
+				{
+					if (!visited[i])
+					{
+						const float cost = getDistance(graph[current], graph[i]);
+						if (cost < minCost)
+						{
+							minCost = cost;
+							nextNode = i;
+						}
+					}
+				}
+
+				if (nextNode == static_cast<size_t>(-1))
+				{
+					break;
+				}
+
+				visited[nextNode] = true;
+				path.push_back(nextNode);
+				totalCost += minCost;
+				current = nextNode;
+			}
+
+			if (current != target)
+			{
+				totalCost += getDistance(graph[current], graph[target]);
+				path.push_back(target);
+			}
+
+			return totalCost;
 		}
 	}
 }
