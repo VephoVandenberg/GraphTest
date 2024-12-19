@@ -166,7 +166,8 @@ namespace Core
 		}
 
 		template <typename T>
-		float TSPHeuristics(const Graph<T> graph, std::vector<size_t>& path, const size_t start, const size_t target, const float cost)
+		float TSPHeuristics(const Graph<T> graph, std::vector<size_t>& path, 
+			const size_t start, const size_t target, const float costPerUnit)
 		{
 			std::vector<bool> visited(graph.size(), false);
 			float totalCost = 0.0;
@@ -199,13 +200,13 @@ namespace Core
 				current = nextNode;
 			}
 
-			return totalCost;
+			return totalCost * costPerUnit;
 		}
 
 		template <typename T>
 		float TSPHeuristics(const Graph<T> graph, std::vector<size_t>& path, 
 			const size_t start, const size_t target, 
-			const float cost, const size_t minNodes, const float randomnessFactor)
+			const float costPerUnit, const size_t minNodes, const float randomnessFactor)
 		{
 			std::vector<bool> visited(graph.size(), false);
 			float totalCost = 0.0;
@@ -285,7 +286,7 @@ namespace Core
 				path.push_back(target);
 			}
 
-			return totalCost;
+			return totalCost * costPerUnit;
 		}
 	}
 }

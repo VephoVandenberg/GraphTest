@@ -17,8 +17,6 @@ int main(int argc, char* argv[])
 {
 	Core::Graph<float> graph = Core::Util::generatePoints<float>(g_radius, g_nPoints);
 
-	// Core::Util::connectNodes(graph, 2, 6);
-
 	std::vector <size_t> path;
 	const float cost = Core::Util::TSPHeuristics(graph, path, 0, 75, g_cost, 90, 3.0f);
 
